@@ -57,3 +57,39 @@ python3 -m venv .venv && . .venv/bin/activate && ./run_rl_swarm.sh
 
 7. **Detach from `screen session`**
 - Use `Ctrl + A` and then press `D` to detach from this screen session.
+
+8. **How to run multiple swarm nodes if you have multiple GPUs**
+
+Example you have 2 GPUs
+
+1. Stop all your currrent nodes
+2. Create a screen/tmux session for the 1st node
+3. Start your 1st node again by use first GPU (from step 1 to step 4 above) then run the command:
+
+`CUDA_VISIBLE_DEVICES=0 ./run_rl_swarm.sh`
+
+Detach your tmux/screen session and create another session for the 2nd node:
+1. Clone repo again to different folder: 
+
+`git clone https://github.com/zunxbt/rl-swarm.git rl-swarm-2 && cd rl-swarm-2`
+
+2. Copy to new script file to run: `cp run_rl_swarm.sh run_rl_swarm_2.sh`
+3. Run command below "
+
+```
+export MODAL_PORT=3001
+export SWARM_PORT=38332
+
+sed -i "s|MODAL_PROXY_URL = \"http://localhost:3000/api/\"|MODAL_PROXY_URL = \"http://localhost:${MODAL_PORT}/api/\"|g" hivemind_exp/chain_utils.py
+
+sed -i "s|/tcp/38331|/tcp/${SWARM_PORT}|g" run_rl_swarm_2.sh
+sed -i "s|yarn dev > /dev/null 2>&1 &|yarn dev -p ${MODAL_PORT} > /dev/null 2>&1 &|g" run_rl_swarm_2.sh
+sed -i "s|open http://localhost:3000|open http://localhost:${MODAL_PORT}|g" run_rl_swarm_2.sh
+```
+4. Start your 2nd node: 
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+CUDA_VISIBLE_DEVICES=1 ./run_rl_swarm_2.sh
+```
