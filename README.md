@@ -58,7 +58,7 @@ python3 -m venv .venv && . .venv/bin/activate && ./run_rl_swarm.sh
 7. **Detach from `screen session`**
 - Use `Ctrl + A` and then press `D` to detach from this screen session.
 
-8. **How to run multiple swarm nodes if you have multiple GPUs**
+## How to run multiple swarm nodes if you have multiple GPUs
 
 Example you have 2 GPUs
 
