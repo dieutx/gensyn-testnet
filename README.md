@@ -93,3 +93,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 CUDA_VISIBLE_DEVICES=1 ./run_rl_swarm_2.sh
 ```
+
+5. Connection issue:
+```
+sed -i -E 's/(startup_timeout: *float *= *)[0-9.]+/\1120/' $(python3 -c "import hivemind.p2p.p2p_daemon as m; print(m.__file__)")
+```
