@@ -83,7 +83,7 @@ export SWARM_PORT=38332
 sed -i "s|MODAL_PROXY_URL = \"http://localhost:3000/api/\"|MODAL_PROXY_URL = \"http://localhost:${MODAL_PORT}/api/\"|g" hivemind_exp/chain_utils.py
 
 sed -i "s|/tcp/38331|/tcp/${SWARM_PORT}|g" run_rl_swarm_2.sh
-sed -i "s|npm run dev > server.log 2>&1 &|npm run dev -- -p ${MODAL_PORT} > server.log 2>&1 &|g" run_rl_swarm_2.sh
+sed -i 's|^npm run dev > server\.log 2>&1 &|npm run dev -- -p 3001 > server.log 2>\&1 \&|' run_rl_swarm_2.sh
 sed -i "/PORT_LINE=\$(ss -ltnp | grep/s/\([\":]\)3000\([ \"']\)/\1$MODAL_PORT\2/" run_rl_swarm_2.sh
 ```
 4. Start your 2nd node: 
